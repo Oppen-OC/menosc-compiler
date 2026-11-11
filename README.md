@@ -1,6 +1,6 @@
 # cmc — compilador de MenosC con Flex y Bison
 
-[![tests](https://github.com/Oppen-OC/LPPL/actions/workflows/tests.yml/badge.svg)](https://github.com/Oppen-OC/LPPL/actions/workflows/tests.yml)
+[![tests](https://github.com/Oppen-OC/menosc-compiler/actions/workflows/tests.yml/badge.svg)](https://github.com/Oppen-OC/menosc-compiler/actions/workflows/tests.yml)
 
 Front-end de compilador para **MenosC**, un subconjunto de C con enteros, lógicos,
 arrays, funciones, `if`/`else`, `for`, `read` y `print`. Lee un programa fuente,
