@@ -1,12 +1,28 @@
 # cmc — compilador de MenosC con Flex y Bison
 
+[![tests](https://github.com/Oppen-OC/LPPL/actions/workflows/tests.yml/badge.svg)](https://github.com/Oppen-OC/LPPL/actions/workflows/tests.yml)
+
 Front-end de compilador para **MenosC**, un subconjunto de C con enteros, lógicos,
 arrays, funciones, `if`/`else`, `for`, `read` y `print`. Lee un programa fuente,
 hace el análisis léxico, sintáctico y semántico, y devuelve cada error con su
-número de línea.
+número de línea. Escrito en C con Flex y Bison.
 
 Proyecto de la asignatura *Lenguajes de Programación y Procesadores de Lenguajes*
 (LPPL), Universitat Politècnica de València.
+
+> *English:* compiler front-end (lexer, LALR(1) parser and type checker) for
+> MenosC, a subset of C, written in C with Flex and Bison. It reports every
+> lexical, syntactic and semantic error with its line number.
+
+## Lo más destacado
+
+- **Tres fases completas:** léxico (Flex), sintáctico LALR(1) sin conflictos
+  (Bison) y semántico con tabla de símbolos por ámbitos.
+- **Comprobación de tipos** con más de 40 mensajes de error distintos, sin
+  errores en cascada.
+- **Tests automatizados:** 13 programas con su salida esperada, `make test` y CI
+  en GitHub Actions en cada push.
+- Unas 500 líneas propias en [src/alex.l](src/alex.l) y [src/asin.y](src/asin.y).
 
 ## Ejemplo
 
@@ -65,8 +81,8 @@ fuente.c ──► src/alex.l ──tokens──► src/asin.y ─────�
   la precedencia de operadores expresada por niveles, de menor a mayor: lógica
   (`&&`, `||`), igualdad, relacional, aditiva, multiplicativa, unaria y sufijo
   (índices y llamadas).
-- **Semántico** (acciones en `asin.y`): cada expresión sintetiza su tipo y
-  `T_ERROR` se propaga sin generar errores en cascada. Se comprueba:
+- **Semántico** (acciones en `asin.y`): cada expresión sintetiza su tipo. Se
+  comprueba:
   - declaraciones repetidas en el mismo ámbito (global / local de la función),
   - uso de identificadores no declarados, indexar algo que no es un array,
     llamar a algo que no es una función, usar una función como variable o
@@ -77,6 +93,23 @@ fuente.c ──► src/alex.l ──tokens──► src/asin.y ─────�
   - tipo del `return` y existencia de una única `main`.
 - Los desplazamientos de variables y parámetros se calculan durante el análisis
   (parámetros con desplazamiento negativo respecto al segmento de enlaces).
+
+## Decisiones técnicas
+
+- **`T_ERROR` como tipo absorbente.** Una subexpresión errónea sintetiza
+  `T_ERROR` y las reglas que lo reciben no vuelven a informar. Así `print(a[z])`
+  con `z` sin declarar da un único error, no tres.
+- **Acciones a mitad de regla.** Guardan y restauran el desplazamiento de
+  variables al entrar y salir de cada función, y comprueban la condición del `if`
+  y el tipo del `return` antes de leer el resto, para que el error salga en su
+  línea.
+- **Funciones sin campo de categoría.** La tabla de símbolos de la asignatura no
+  guarda si un identificador es variable o función. Se distinguen porque solo las
+  funciones tienen tipo simple y referencia a un dominio de parámetros
+  (`esFuncion()` en [src/asin.y](src/asin.y)).
+- **Tests de regresión.** Los casos `a04`, `b06` y `b07` cubren los bugs del
+  análisis semántico que se corrigieron y fallan con la versión anterior del
+  código.
 
 ## Compilar y probar
 
@@ -104,9 +137,12 @@ Los programas `a*.c` de [tests/](tests/) son correctos y no deben dar errores; l
   [include/libtds.h](include/libtds.h)) y los casos de prueba `a00`–`a03` y
   `b00`–`b05`.
 
-## Limitaciones
+## Limitaciones y siguientes pasos
 
-- Solo es el front-end: no genera código.
-- Se detiene en el primer error sintáctico (no hay recuperación de errores con el
-  token `error` de Bison); los errores semánticos sí se acumulan.
+- Solo es el front-end: el siguiente paso natural es generar código intermedio.
+- Se detiene en el primer error sintáctico; añadir recuperación con el token
+  `error` de Bison permitiría seguir analizando. Los errores semánticos sí se
+  acumulan.
+- La tabla de símbolos es una librería precompilada; reimplementarla eliminaría
+  la dependencia de x86-64.
 - Como pide la especificación de MenosC, `if` siempre lleva `else`.
