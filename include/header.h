@@ -53,6 +53,7 @@ extern int numErrores;              /* Contador del numero de errores        */
 typedef struct lista{
     int ref;
     int talla;
+    int conError;   /* Parametros actuales: algun argumento es T_ERROR */
 } Lista;
 
 

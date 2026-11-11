@@ -1,0 +1,12 @@
+
+Error en 8: El id de la variable ya ha sido utilizado
+
+Error en 10: La expresion del 'for' ha de ser de tipo simple
+
+Error en 13: Error de tipos en la expresión lógica, no son del mismo tipo
+
+Error en 14: Error de tipos en la expresión de igualdad, no son del mismo tipo
+
+Error en 15: Error de tipos en la expresión unaria, '!' requiere un lógico
+
+Error en 16: Error de tipos en la expresión relacional, no son del mismo tipo

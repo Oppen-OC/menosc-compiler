@@ -18,10 +18,13 @@
   Para mantener el numero de linea actual en la variable global yylineno
 ----------------------------------------------------------------------*/
 %option yylineno
+/* Un solo fichero de entrada: no hace falta yywrap() ni enlazar con -lfl */
+%option noyywrap
 
-delimitador     [ \t\n]+
-int             [0-9]*
-float           [0-9]*+\.[0-9]*
+delimitador     [ \t\r\n]+
+int             [0-9]+
+/* MenosC admite constantes reales (3.5, 2., .34) y las trunca a entero */
+float           {int}\.[0-9]*|\.{int}
 digito          {int}|{float}
 letra           [a-zA-Z]
 id              {letra}({int}|{letra}|_)*
@@ -44,8 +47,8 @@ comentario      \/\/[^\n]*
 "<"				{ retornar(COMPMENOR_); }
 ">="				{ retornar(COMPMAYORIG_); }
 "<="				{ retornar(COMPMENORIG_); }
-"=="				{ retornar(OPASIG_); }
-"!="				{ retornar(OPNOTASIG_); }
+"=="				{ retornar(OPIGUAL_); }
+"!="				{ retornar(OPDISTINTO_); }
 "="					{ retornar(ASIG_); }
 
 "for"				{ retornar(FOR_); }

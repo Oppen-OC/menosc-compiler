@@ -1,0 +1,6 @@
+*.o
+cmc
+alex.c
+asin.c
+include/asin.h
+tests/*.got

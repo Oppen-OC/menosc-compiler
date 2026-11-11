@@ -1,0 +1,12 @@
+
+Error en 9: READ solo acepta variables de tipo entero
+
+Error en 10: La condición del FOR debe ser de tipo lógico
+
+Error en 11: Error de tipos en la expresión multiplicativa, no son del mismo tipo
+
+Error en 12: Error de tipos en la expresión aditiva, no son del mismo tipo
+
+Error en 13: Error de tipo en la asignación
+
+Error en 15: PRINT solo acepta expresiones de tipo entero

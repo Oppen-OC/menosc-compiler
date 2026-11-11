@@ -1,0 +1,20 @@
+
+Error en 5: Ya existe un parametro con el mismo identificador.
+
+Error en 7: El id de la variable ya ha sido utilizado
+
+Error en 8: Incompatibilidad de tipos en el return.
+
+Error en 14: Incompatibilidad de tipos en el return.
+
+Error en 17: La función 'main' ya ha sido definida
+
+Error en 17: Función ya declarada
+
+Error en 21: La condición del IF debe ser de tipo lógico
+
+Error en 22: El identificador no es una función
+
+Error en 23: Los parámetros actuales no coinciden con los declarados en la función.
+
+Error en 26: Error en la declaración de la función, no se puede verificar el return.

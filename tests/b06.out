@@ -1,0 +1,12 @@
+
+Error en 6: Variable no declarada
+
+Error en 7: El identificador no es un array
+
+Error en 8: El identificador no es una función
+
+Error en 9: La variable debe ser de tipo simple
+
+Error en 10: Error de tipos en la expresión unaria, '!' requiere un lógico
+
+Error en 11: Error de tipos en la expresión unaria, '+'/'-' requieren un entero

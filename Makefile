@@ -1,6 +1,5 @@
 ###############################################################################
-# Ejemplo de fichero para realizar correctamente la tarea de compilacion,     #
-# carga y edicion de enlaces de las distintas partes del proyecto             #
+# Compilador de MenosC.  make: construye ./cmc   make test: pasa los tests     #
 ###############################################################################
 # Directorios de trabajo
 SRCDIR = src
@@ -8,7 +7,7 @@ INCDIR = include
 LIBDIR = lib
 # Opciones de compilacion
 COPT = -Wall
-CLIB = -lfl -ltds
+CLIB = -ltds
 OBJS = ./alex.o  ./asin.o ./principal.o 
 #
 cmc:	$(OBJS)  $(LIBDIR)/libtds.a
@@ -25,7 +24,18 @@ asin.c:	$(SRCDIR)/asin.y
 alex.c:	$(SRCDIR)/alex.l 
 	flex -oalex.c $(SRCDIR)/alex.l 
 
+$(OBJS): $(INCDIR)/header.h
+
+# Compara la salida de cada tests/X.c con tests/X.out (falla si cmc se cuelga)
+test: cmc
+	@for f in tests/*.c; do \
+	  ./cmc $$f > $${f%.c}.got 2>/dev/null || { echo "CRASH  $$f"; exit 1; }; \
+	  diff --strip-trailing-cr -u $${f%.c}.out $${f%.c}.got && echo "OK     $$f" || exit 1; \
+	done
+
 clean:
-	rm -f ./alex.c  ./asin.c ./include/asin.h 
+	rm -f ./cmc ./alex.c  ./asin.c ./include/asin.h ./tests/*.got
 	rm -f ./*.o  ./include/*.?~  ./src/*.?~
+
+.PHONY: test clean
 ###############################################################################
